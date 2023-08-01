@@ -6,10 +6,13 @@
         {
             Rules rules = defineRules(retrieveMoves(args));
 
-            foreach (var move in rules.moves)
+            Game game = new Game(rules);
+            game.Start();
+
+            /*foreach (var move in rules.Moves)
                 Console.WriteLine($"Move: {move.Current}\t" +
                     $"Strongers: {String.Join(' ', move.Strongers)}\t" +
-                    $"Weakers: {String.Join(' ', move.Weakers)}");
+                    $"Weakers: {String.Join(' ', move.Weakers)}");*/
         }
 
 

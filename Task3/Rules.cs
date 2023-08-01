@@ -2,14 +2,14 @@
 {
     internal class Rules
     {
-        public List<Move> moves = new();
+        public List<Move> Moves { get; private set; } = new();
 
 
         public void ConfigureRules(List<string> moves, int amountInSemicircle)
         {
             foreach (var move in moves)
             {
-                this.moves.Add(new Move
+                Moves.Add(new Move
                 {
                     Current = move,
                     Strongers = getNextMoves(moves, move, amountInSemicircle),
