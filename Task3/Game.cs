@@ -5,8 +5,9 @@ namespace Task3
 {
     internal class Game
     {
-        private readonly Rules rules = new();
+        private readonly Rules rules;
         private readonly Helper helper;
+        private KeyGenerator keyGenerator = new();
         private int computerMoveNumber = 0;
 
 
@@ -21,9 +22,12 @@ namespace Task3
             string command = "";
             do
             {
+                keyGenerator = new();
                 computerMoveNumber = getRandomMove();
+                Console.WriteLine($"HMAC: {keyGenerator.GetHash(rules.Moves[computerMoveNumber].Name)}");
 
                 drawMenu();
+
                 command = Console.ReadLine() ?? "";
                 processCommand(command);
 
@@ -83,6 +87,7 @@ namespace Task3
                 _ => ""
             };
             Console.WriteLine(message);
+            Console.WriteLine($"HMAK key: {keyGenerator.Key}");
         }
     }
 }
