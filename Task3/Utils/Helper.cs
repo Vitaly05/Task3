@@ -1,6 +1,6 @@
 ﻿using ConsoleTables;
 
-namespace Task3
+namespace Task3.Utils
 {
     internal class Helper
     {

@@ -1,4 +1,7 @@
-﻿namespace Task3
+﻿using Task3.Data;
+using Task3.Utils;
+
+namespace Task3
 {
     internal class Game
     {

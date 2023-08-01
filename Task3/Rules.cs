@@ -1,4 +1,6 @@
-﻿namespace Task3
+﻿using Task3.Data;
+
+namespace Task3
 {
     internal class Rules
     {
