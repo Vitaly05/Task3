@@ -11,11 +11,16 @@
             {
                 Moves.Add(new Move
                 {
-                    Current = move,
+                    Name = move,
                     Strongers = getNextMoves(moves, move, amountInSemicircle),
                     Weakers = getPreviousMoves(moves, move, amountInSemicircle)
                 });
             }
+        }
+
+        public GameResult GetResult(Move playerMove, Move computerMove)
+        {
+            return playerMove.GetResult(computerMove);
         }
 
 

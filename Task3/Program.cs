@@ -5,6 +5,7 @@
         public static void Main(string[] args)
         {
             Rules rules = defineRules(retrieveMoves(args));
+            //Rules rules = defineRules(new List<string>() { "one", "two", "three" });
 
             Game game = new Game(rules);
             game.Start();
