@@ -3,12 +3,14 @@
     internal class Game
     {
         private readonly Rules rules = new();
+        private readonly Helper helper;
         private int computerMoveNumber = 0;
 
 
         public Game(Rules rules)
         {
             this.rules = rules;
+            helper = new Helper(rules);
         }
 
         public void Start()
@@ -28,21 +30,32 @@
 
         private void drawMenu()
         {
+            Console.ForegroundColor = ConsoleColor.Blue;
             Console.WriteLine("Available moves:");
+
+            Console.ResetColor();
             for (int i = 0; i < rules.Moves.Count; ++i)
             {
                 Console.WriteLine($"{i + 1} - {rules.Moves[i].Name}");
             }
+
+            Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("0 - exit");
+
+            Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("? - help");
+
+            Console.ForegroundColor = ConsoleColor.Yellow;
             Console.Write("Enter your move: ");
+
+            Console.ResetColor();
         }
 
         private int getRandomMove() => new Random().Next(0, rules.Moves.Count);
 
         private void processCommand(string command)
         {
-            if (command == "?") return;
+            if (command == "?") helper.PrintTable();
             else if (command != "0") makeMove(Int32.Parse(command) - 1);
         }
 
@@ -51,8 +64,8 @@
             var playerMove = rules.Moves[moveNumber];
             var computerMove = rules.Moves[computerMoveNumber];
 
-            Console.WriteLine($"Your move: {playerMove.Name}");
-            Console.WriteLine($"Computer move: {computerMove.Name}");
+            Console.WriteLine($"Your move: {ConsoleColors.ChoseColor(playerMove.Name, ConsoleColors.YellowColor)}");
+            Console.WriteLine($"Computer move: {ConsoleColors.ChoseColor(computerMove.Name, ConsoleColors.BlueColor)}");
             
             printResult(rules.GetResult(playerMove, computerMove));
         }
@@ -61,9 +74,9 @@
         {
             string message = result switch
             {
-                GameResult.Win => "You win!",
-                GameResult.Lose => "You lose!",
-                GameResult.Draw => "Draw!",
+                GameResult.Win => $"{ConsoleColors.GreenColor}You win!{ConsoleColors.DefaultColor}",
+                GameResult.Lose => $"{ConsoleColors.RedColor}You lose!{ConsoleColors.DefaultColor}",
+                GameResult.Draw => $"{ConsoleColors.YellowColor}Draw!{ConsoleColors.DefaultColor}",
                 _ => ""
             };
             Console.WriteLine(message);
