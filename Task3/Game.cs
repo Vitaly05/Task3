@@ -1,5 +1,6 @@
 ﻿using Task3.Data;
 using Task3.Utils;
+using Task3.Utils.Validators;
 
 namespace Task3
 {
@@ -7,6 +8,7 @@ namespace Task3
     {
         private readonly Rules rules;
         private readonly Helper helper;
+        private MoveValidator validator;
         private KeyGenerator keyGenerator = new();
         private int computerMoveNumber = 0;
 
@@ -15,6 +17,7 @@ namespace Task3
         {
             this.rules = rules;
             helper = new Helper(rules);
+            validator = new MoveValidator(rules.Moves.Count);
         }
 
         public void Start()
@@ -25,12 +28,11 @@ namespace Task3
                 keyGenerator = new();
                 computerMoveNumber = getRandomMove();
                 Console.WriteLine($"HMAC: {keyGenerator.GetHash(rules.Moves[computerMoveNumber].Name)}");
-
                 drawMenu();
-
                 command = Console.ReadLine() ?? "";
+                if (!isValid(command))
+                    continue;
                 processCommand(command);
-
             } while (command != "0");
         }
 
@@ -59,6 +61,8 @@ namespace Task3
         }
 
         private int getRandomMove() => new Random().Next(0, rules.Moves.Count);
+
+        private bool isValid(string command) => validator.Validate(command).IsValid ? true : false;
 
         private void processCommand(string command)
         {
