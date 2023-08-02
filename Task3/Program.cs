@@ -1,27 +1,27 @@
-﻿namespace Task3
+﻿using FluentValidation.Results;
+using Task3.Utils.Validators;
+
+namespace Task3
 {
     class Program
     {
         public static void Main(string[] args)
         {
-            Rules rules = defineRules(retrieveMoves(args));
-            //Rules rules = defineRules(new List<string>() { "one", "two", "three" });
-
-            Game game = new Game(rules);
-            game.Start();
-
-            /*foreach (var move in rules.Moves)
-                Console.WriteLine($"Move: {move.Current}\t" +
-                    $"Strongers: {String.Join(' ', move.Strongers)}\t" +
-                    $"Weakers: {String.Join(' ', move.Weakers)}");*/
+            List<string> moves = new List<string>(args).Skip(1).ToList();
+            validateMoves(moves);
+            startGame(defineRules(moves));
         }
 
-
-        private static List<string> retrieveMoves(string[] args)
+        private static void validateMoves(List<string> moves)
         {
-            List<string> moves = new List<string>(args);
-            moves.RemoveAt(0);
-            return moves;
+            ArgsValidator validator = new ArgsValidator();
+            ValidationResult results = validator.Validate(moves);
+            if (!results.IsValid)
+            {
+                foreach (var error in results.Errors)
+                    Console.WriteLine(error);
+                return;
+            }
         }
 
         private static Rules defineRules(List<string> moves)
@@ -29,6 +29,12 @@
             Rules rules = new();
             rules.ConfigureRules(moves, moves.Count / 2);
             return rules;
+        }
+
+        private static void startGame(Rules rules)
+        {
+            Game game = new Game(rules);
+            game.Start();
         }
     }
 }
