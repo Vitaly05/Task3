@@ -2,7 +2,7 @@
   "profiles": {
     "Task3": {
       "commandName": "Project",
-      "commandLineArgs": "Program.cs one two three"
+      "commandLineArgs": "Program.cs Rock Paper Scissors"
     }
   }
 }

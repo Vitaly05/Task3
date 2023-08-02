@@ -66,7 +66,7 @@ namespace Task3
 
         private void processCommand(string command)
         {
-            if (command == "?") helper.PrintTable();
+            if (command == "?") helper.PrintHelpInformation();
             else if (command != "0") makeMove(Int32.Parse(command) - 1);
         }
 
