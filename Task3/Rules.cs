@@ -6,51 +6,43 @@ namespace Task3
     {
         public List<Move> Moves { get; private set; } = new();
 
-
-        public void ConfigureRules(List<string> moves, int amountInSemicircle)
+        public void ConfigureRules(List<string> moves, int movesAmountInSemicircle)
         {
             foreach (var move in moves)
             {
                 Moves.Add(new Move
                 {
                     Name = move,
-                    Strongers = getNextMoves(moves, move, amountInSemicircle),
-                    Weakers = getPreviousMoves(moves, move, amountInSemicircle)
+                    Strongers = getNextMoves(moves, move, movesAmountInSemicircle),
+                    Weakers = getPreviousMoves(moves, move, movesAmountInSemicircle)
                 });
             }
         }
 
-        public GameResult GetResult(Move playerMove, Move computerMove)
-        {
-            return playerMove.GetResult(computerMove);
-        }
+        public GameResult GetGameResult(Move playerMove, Move computerMove) => playerMove.GetResult(computerMove);
 
-
-        private List<string> getNextMoves(List<string> list, string current, int amount)
+        private List<string> getNextMoves(List<string> moves, string currentMove, int amount)
         {
             List<string> nextMoves = new();
-            var index = list.IndexOf(current) + 1;
-
+            var index = moves.IndexOf(currentMove) + 1;
             while (amount-- > 0)
             {
-                if (index == list.Count) index = 0;
-                nextMoves.Add(list.ElementAt(index++));
+                if (index == moves.Count) index = 0;
+                nextMoves.Add(moves.ElementAt(index++));
             }
-
             return nextMoves;
         }
-        private List<string> getPreviousMoves(List<string> list, string current, int amount)
-        {
-            List<string> prevMoves = new();
-            var index = list.IndexOf(current) - 1;
 
+        private List<string> getPreviousMoves(List<string> moves, string currentMove, int amount)
+        {
+            List<string> previousMoves = new();
+            var index = moves.IndexOf(currentMove) - 1;
             while (amount-- > 0)
             {
-                if (index < 0) index = list.Count - 1;
-                prevMoves.Add(list.ElementAt(index--));
+                if (index < 0) index = moves.Count - 1;
+                previousMoves.Add(moves.ElementAt(index--));
             }
-
-            return prevMoves;
+            return previousMoves;
         }
     }
 }

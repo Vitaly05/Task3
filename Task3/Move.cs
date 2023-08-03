@@ -7,8 +7,8 @@ namespace Task3
         public string Name { get; init; } = "";
 
         public List<string> Strongers { get; init; } = new();
-        public List<string> Weakers { get; init; } = new();
 
+        public List<string> Weakers { get; init; } = new();
 
         public GameResult GetResult(Move move)
         {

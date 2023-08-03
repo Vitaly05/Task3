@@ -6,8 +6,8 @@ namespace Task3.Utils
     internal class KeyGenerator
     {
         public string Key { get; private set; } = "";
-        public string Hmac { get; private set; } = "";
 
+        public string Hmac { get; private set; } = "";
 
         public KeyGenerator()
         {
@@ -18,7 +18,6 @@ namespace Task3.Utils
         {
             byte[] keyBytes = Encoding.UTF8.GetBytes(Key);
             byte[] textBytes = Encoding.UTF8.GetBytes(text);
-
             using (HMACSHA256 hmac = new HMACSHA256(keyBytes))
             {
                 var hash = hmac.ComputeHash(textBytes);
@@ -26,13 +25,12 @@ namespace Task3.Utils
             }
         }
 
-
         private void generateKey()
         {
-            var f = RandomNumberGenerator.Create();
-            var s = new byte[32];
-            f.GetBytes(s);
-            Key = Convert.ToHexString(s);
+            var rng = RandomNumberGenerator.Create();
+            var bytes = new byte[32];
+            rng.GetBytes(bytes);
+            Key = Convert.ToHexString(bytes);
         }
     }
 }

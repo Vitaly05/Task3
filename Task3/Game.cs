@@ -8,11 +8,14 @@ namespace Task3
     internal class Game
     {
         private readonly Rules rules;
-        private readonly Helper helper;
-        private MoveValidator validator;
-        private KeyGenerator keyGenerator = new();
-        private Move computerMove = new();
 
+        private readonly Helper helper;
+
+        private MoveValidator validator;
+
+        private KeyGenerator keyGenerator = new();
+
+        private Move computerMove = new();
 
         public Game(Rules rules)
         {
@@ -37,7 +40,6 @@ namespace Task3
                 processCommand(command);
             } while (command != "0");
         }
-
 
         private void drawMenu()
         {
@@ -64,19 +66,21 @@ namespace Task3
             var playerMove = rules.Moves[moveNumber];
             AnsiConsole.MarkupLine($"Your move: {Painter.ChangeColor(playerMove.Name, Painter.UserColor)}");
             AnsiConsole.MarkupLine($"Computer move: {Painter.ChangeColor(computerMove.Name, Painter.ComputerColor)}");
-            printResult(rules.GetResult(playerMove, computerMove));
+            printResult(rules.GetGameResult(playerMove, computerMove));
         }
 
         private void printResult(GameResult result)
         {
-            string message = result switch
+            AnsiConsole.MarkupLine(getResultMessage(result));
+            Console.WriteLine($"HMAK key: {keyGenerator.Key}");
+        }
+
+        private string getResultMessage(GameResult result) =>
+            result switch
             {
                 GameResult.Win => Painter.ChangeColor("You win!", Painter.WinColor),
                 GameResult.Lose => Painter.ChangeColor("You lose!", Painter.LoseColor),
                 _ => Painter.ChangeColor("Draw!", Painter.DrawColor)
             };
-            AnsiConsole.MarkupLine(message);
-            Console.WriteLine($"HMAK key: {keyGenerator.Key}");
-        }
     }
 }
