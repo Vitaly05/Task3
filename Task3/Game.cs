@@ -1,4 +1,5 @@
-﻿using Task3.Data;
+﻿using Spectre.Console;
+using Task3.Data;
 using Task3.Utils;
 using Task3.Utils.Validators;
 
@@ -40,25 +41,12 @@ namespace Task3
 
         private void drawMenu()
         {
-            Console.ForegroundColor = ConsoleColor.Blue;
-            Console.WriteLine("Available moves:");
-
-            Console.ResetColor();
+            AnsiConsole.MarkupLine(Painter.ChangeColor("Available moves:", Color.Yellow));
             for (int i = 0; i < rules.Moves.Count; ++i)
-            {
-                Console.WriteLine($"{i + 1} - {rules.Moves[i].Name}");
-            }
-
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine("0 - exit");
-
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine("? - help");
-
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.Write("Enter your move: ");
-
-            Console.ResetColor();
+                AnsiConsole.MarkupLine($"{Painter.ChangeColor($"{i + 1}", Color.Yellow)} - {rules.Moves[i].Name}");
+            AnsiConsole.MarkupLine(Painter.ChangeColor("0 - exit", Color.Red1));
+            AnsiConsole.MarkupLine(Painter.ChangeColor("? - help", Color.Green));
+            AnsiConsole.Markup(Painter.ChangeColor("Enter your move: ", Color.Yellow));
         }
 
         private int getRandomMove() => new Random().Next(0, rules.Moves.Count);
@@ -75,10 +63,8 @@ namespace Task3
         {
             var playerMove = rules.Moves[moveNumber];
             var computerMove = rules.Moves[computerMoveNumber];
-
-            Console.WriteLine($"Your move: {ConsoleColors.ChoseColor(playerMove.Name, ConsoleColors.YellowColor)}");
-            Console.WriteLine($"Computer move: {ConsoleColors.ChoseColor(computerMove.Name, ConsoleColors.BlueColor)}");
-            
+            AnsiConsole.MarkupLine($"Your move: {Painter.ChangeColor(playerMove.Name, Painter.UserColor)}");
+            AnsiConsole.MarkupLine($"Computer move: {Painter.ChangeColor(computerMove.Name, Painter.ComputerColor)}");
             printResult(rules.GetResult(playerMove, computerMove));
         }
 
@@ -86,12 +72,11 @@ namespace Task3
         {
             string message = result switch
             {
-                GameResult.Win => $"{ConsoleColors.GreenColor}You win!{ConsoleColors.DefaultColor}",
-                GameResult.Lose => $"{ConsoleColors.RedColor}You lose!{ConsoleColors.DefaultColor}",
-                GameResult.Draw => $"{ConsoleColors.YellowColor}Draw!{ConsoleColors.DefaultColor}",
-                _ => ""
+                GameResult.Win => Painter.ChangeColor("You win!", Painter.WinColor),
+                GameResult.Lose => Painter.ChangeColor("You lose!", Painter.LoseColor),
+                _ => Painter.ChangeColor("Draw!", Painter.DrawColor)
             };
-            Console.WriteLine(message);
+            AnsiConsole.MarkupLine(message);
             Console.WriteLine($"HMAK key: {keyGenerator.Key}");
         }
     }
