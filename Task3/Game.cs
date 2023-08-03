@@ -11,7 +11,7 @@ namespace Task3
         private readonly Helper helper;
         private MoveValidator validator;
         private KeyGenerator keyGenerator = new();
-        private int computerMoveNumber = 0;
+        private Move computerMove = new();
 
 
         public Game(Rules rules)
@@ -27,10 +27,10 @@ namespace Task3
             do
             {
                 keyGenerator = new();
-                computerMoveNumber = getRandomMove();
+                computerMove = getRandomMove();
                 do
                 {
-                    Console.WriteLine($"HMAC: {keyGenerator.GetHash(rules.Moves[computerMoveNumber].Name)}");
+                    Console.WriteLine($"HMAC: {keyGenerator.GetHash(computerMove.Name)}");
                     drawMenu();
                     command = Console.ReadLine() ?? "";
                 } while (!isValid(command));
@@ -49,7 +49,7 @@ namespace Task3
             AnsiConsole.Markup(Painter.ChangeColor("Enter your move: ", Color.Yellow));
         }
 
-        private int getRandomMove() => new Random().Next(0, rules.Moves.Count);
+        private Move getRandomMove() => rules.Moves[new Random().Next(0, rules.Moves.Count)];
 
         private bool isValid(string command) => validator.Validate(command).IsValid ? true : false;
 
@@ -62,7 +62,6 @@ namespace Task3
         private void makeMove(int moveNumber)
         {
             var playerMove = rules.Moves[moveNumber];
-            var computerMove = rules.Moves[computerMoveNumber];
             AnsiConsole.MarkupLine($"Your move: {Painter.ChangeColor(playerMove.Name, Painter.UserColor)}");
             AnsiConsole.MarkupLine($"Computer move: {Painter.ChangeColor(computerMove.Name, Painter.ComputerColor)}");
             printResult(rules.GetResult(playerMove, computerMove));
