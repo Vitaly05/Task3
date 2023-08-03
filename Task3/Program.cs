@@ -7,12 +7,16 @@ namespace Task3
     {
         public static void Main(string[] args)
         {
-            List<string> moves = new List<string>(args).Skip(1).ToList();
-            validateMoves(moves);
+            List<string> moves = extractMoves(args);
+            validateMoves(moves, out bool isValid);
+            if (!isValid) return;
             startGame(defineRules(moves));
         }
 
-        private static void validateMoves(List<string> moves)
+        private static List<string> extractMoves(string[] args) => 
+            args.Length == 0 ? new List<string>() : new List<string>(args).Skip(1).ToList();
+
+        private static void validateMoves(List<string> moves, out bool isValid)
         {
             ArgsValidator validator = new ArgsValidator();
             ValidationResult results = validator.Validate(moves);
@@ -20,8 +24,9 @@ namespace Task3
             {
                 foreach (var error in results.Errors)
                     Console.WriteLine(error);
-                return;
+                isValid = false;
             }
+            else isValid = true;
         }
 
         private static Rules defineRules(List<string> moves)
