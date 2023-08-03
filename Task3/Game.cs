@@ -22,16 +22,17 @@ namespace Task3
 
         public void Start()
         {
-            string command = "";
+            string command;
             do
             {
                 keyGenerator = new();
                 computerMoveNumber = getRandomMove();
-                Console.WriteLine($"HMAC: {keyGenerator.GetHash(rules.Moves[computerMoveNumber].Name)}");
-                drawMenu();
-                command = Console.ReadLine() ?? "";
-                if (!isValid(command))
-                    continue;
+                do
+                {
+                    Console.WriteLine($"HMAC: {keyGenerator.GetHash(rules.Moves[computerMoveNumber].Name)}");
+                    drawMenu();
+                    command = Console.ReadLine() ?? "";
+                } while (!isValid(command));
                 processCommand(command);
             } while (command != "0");
         }
