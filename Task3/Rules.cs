@@ -1,4 +1,5 @@
-﻿using Task3.Data;
+﻿using System;
+using Task3.Data;
 
 namespace Task3
 {
@@ -8,39 +9,33 @@ namespace Task3
 
         public void ConfigureRules(List<string> moves, int movesAmountInSemicircle)
         {
-            foreach (var move in moves)
-            {
+            for (int i = 0; i < moves.Count; i++)
                 Moves.Add(new Move
                 {
-                    Name = move,
-                    Strongers = getNextMoves(moves, move, movesAmountInSemicircle),
-                    Weakers = getPreviousMoves(moves, move, movesAmountInSemicircle)
+                    Name = moves[i],
+                    Strongers = getNextMoves(moves, i, movesAmountInSemicircle),
+                    Weakers = getPreviousMoves(moves, i, movesAmountInSemicircle)
                 });
-            }
         }
 
         public GameResult GetGameResult(Move playerMove, Move computerMove) => playerMove.GetResult(computerMove);
 
-        private List<string> getNextMoves(List<string> moves, string currentMove, int amount)
+        private List<string> getNextMoves(List<string> moves, int currentIndex, int amount)
         {
             List<string> nextMoves = new();
-            var index = moves.IndexOf(currentMove) + 1;
-            while (amount-- > 0)
-            {
-                if (index == moves.Count) index = 0;
-                nextMoves.Add(moves.ElementAt(index++));
-            }
+            for (int i = 1; i <= amount; i++)
+                nextMoves.Add(moves[(currentIndex + i) % moves.Count]);
             return nextMoves;
         }
 
-        private List<string> getPreviousMoves(List<string> moves, string currentMove, int amount)
+        private List<string> getPreviousMoves(List<string> moves, int currentIndex, int amount)
         {
             List<string> previousMoves = new();
-            var index = moves.IndexOf(currentMove) - 1;
-            while (amount-- > 0)
+            for (int i = 1; i <= amount; i++)
             {
-                if (index < 0) index = moves.Count - 1;
-                previousMoves.Add(moves.ElementAt(index--));
+                int prevIndex = (currentIndex - i) % moves.Count;
+                if (prevIndex < 0) prevIndex += moves.Count;
+                previousMoves.Add(moves[prevIndex]);
             }
             return previousMoves;
         }
